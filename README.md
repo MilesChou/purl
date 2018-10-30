@@ -1,2 +1,4 @@
 # purl
-Parser for URL
+
+URL Parser tool for CLI
+

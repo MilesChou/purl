@@ -1,0 +1,43 @@
+#!/usr/bin/env php
+<?php
+
+require_once __DIR__ . '/vendor/autoload.php';
+
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\ArgvInput;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\ConsoleOutput;
+use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\HttpFoundation\Request;
+
+class Purl extends Command
+{
+    protected function configure()
+    {
+        parent::configure();
+
+        $this->setName('purl')
+            ->addArgument('url', InputArgument::REQUIRED, 'URL')
+            ->addOption('part', '-p', InputOption::VALUE_REQUIRED, 'Part');
+    }
+
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
+        $url = $input->getArgument('url');
+        $part = $input->getOption('part');
+
+        $request = Request::create($url);
+
+        switch ($part) {
+            case 'query':
+                $query = $request->query->all();
+                ksort($query);
+                dd($query);
+            default:
+        }
+    }
+}
+
+(new Purl())->run(new ArgvInput(), new ConsoleOutput());
